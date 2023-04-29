@@ -92,8 +92,8 @@ int	main(int ac, char **av)
 			best_move(&stack_a, &stack_b);
 	}
 	zero_location(&stack_a, &stack_b);
-	while (stack_a)
-		printf("%d ", stack_a->data), stack_a = stack_a->next;
+	// while (stack_a)
+	// 	printf("%d ", stack_a->data), stack_a = stack_a->next;
 	// system("leaks push_swap");
 	return (0);
 }
