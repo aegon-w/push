@@ -47,8 +47,8 @@ void	shift_up(t_lst **lst)
 		return ;
 	if (!(*lst)->next)
 		return ;
-	if (!(*lst)->next->next)
-		return ;
+	// if (!(*lst)->next->next)
+	// 	return ;
 	ft_lstadd_back(lst, tmp);
 	*lst = tmp->next;
 	tmp->next = NULL;
@@ -64,8 +64,8 @@ void	shift_down(t_lst **lst)
 		return ;
 	if (!(*lst)->next)
 		return ;
-	if (!(*lst)->next->next)
-		return ;
+	// if (!(*lst)->next->next)
+	// 	return ;
 	while (tmp->next->next)
 		tmp = tmp->next;
 	last = tmp->next;
