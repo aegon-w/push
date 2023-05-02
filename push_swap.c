@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:02:05 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/05/02 01:58:32 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:36:33 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	min_pos_location(t_lst **stack_a, int target)
 {
 	t_pos	*p;
 	t_lst	*tmp;
+	int		ret;
 
 	p = get_pos(stack_a);
 	tmp = *stack_a;
@@ -74,10 +75,10 @@ int	min_pos_location(t_lst **stack_a, int target)
 		tmp = tmp->next;
 		p->up++;
 	}
-	free(p);
+	ret = p->up1;
 	if (p->val == INT_MAX)
-		return (p->upper);
-	return (p->up1);
+		ret = p->upper;
+	return (free(p), ret);
 }
 
 t_ints	find_best_move(t_lst **stack_a, t_lst **stack_b, t_updo *t, int size_b)

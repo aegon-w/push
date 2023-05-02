@@ -6,11 +6,17 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 09:52:50 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/05/02 01:33:15 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:38:05 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	error(void)
+{
+	write(1, "Error\n", 7);
+	exit(EXIT_FAILURE);
+}
 
 void	sorting_2_3_5(t_lst **stack_a, t_lst **stack_b, int size)
 {
@@ -57,9 +63,11 @@ void	check_inp(int ac, char **av, t_lst **stack_a)
 	i = 1;
 	while (i < ac)
 	{
+		if (!av[i])
+			error();
 		s = ft_split(av[i], ' ');
-		if (s == NULL)
-			exit(1);
+		if (!*s)
+			error();
 		j = -1;
 		while (s[++j])
 			ft_lstadd_back(stack_a, ft_lstnew(ft_atoi(s[j])));
@@ -95,7 +103,5 @@ int	main(int ac, char **av)
 		}
 		zero_location(&stack_a, &stack_b);
 	}
-	// system("leaks push_swap");
-	// exit(1);
 	return (0);
 }
