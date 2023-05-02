@@ -6,11 +6,21 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 09:52:50 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/29 14:08:40 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/02 01:33:15 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	sorting_2_3_5(t_lst **stack_a, t_lst **stack_b, int size)
+{
+	if (size == 2)
+		two_nb_algo(stack_a);
+	if (size == 3)
+		t_nb_algo(stack_a);
+	if (size == 5)
+		f_nb_algo(stack_a, stack_b);
+}
 
 void	zero_location(t_lst **stack_a, t_lst **stack_b)
 {
@@ -37,63 +47,55 @@ void	zero_location(t_lst **stack_a, t_lst **stack_b)
 			rrotate(stack_a, stack_b, 'a');
 }
 
+void	check_inp(int ac, char **av, t_lst **stack_a)
+{
+	int		i;
+	int		j;
+	char	**s;
+
+	s = NULL;
+	i = 1;
+	while (i < ac)
+	{
+		s = ft_split(av[i], ' ');
+		if (s == NULL)
+			exit(1);
+		j = -1;
+		while (s[++j])
+			ft_lstadd_back(stack_a, ft_lstnew(ft_atoi(s[j])));
+		i++;
+		ft_free(s, j);
+	}
+	check_args(*stack_a);
+}
+
 int	main(int ac, char **av)
 {
-	int i;
-	int j;
-	t_lst *stack_a;
-	t_lst *stack_b;
-	t_lst *tmp;
-	char **s;
-	int *arr;
-	int *new;
-	int size_a;
+	int		i;
+	int		j;
+	t_lst	*stack_a;
+	t_lst	*stack_b;
 
 	i = 1;
 	j = 0;
 	stack_a = NULL;
 	stack_b = NULL;
-	tmp = NULL;
-	while (i < ac)
+	if (ac != 1)
 	{
-		j = 0;
-		s = ft_split(av[i], ' ');
-		while (s[j])
+		check_inp(ac, av, &stack_a);
+		re_index(stack_a);
+		if (ft_lstsize(stack_a) == 2 || ft_lstsize(stack_a) == 3
+			|| ft_lstsize(stack_a) == 5)
+			sorting_2_3_5(&stack_a, &stack_b, ft_lstsize(stack_a));
+		else
 		{
-			//printf("[%d]\n", ft_atoi(s[j]));
-			ft_lstadd_back(&stack_a, ft_lstnew(ft_atoi(s[j])));
-			//check_int(ft_atoi(s[j]));
-			j++;
+			sorting_100_500(&stack_a, &stack_b);
+			while (stack_b)
+				best_move(&stack_a, &stack_b);
 		}
-		// check_int(ft_atoi(av[i]));
-		i++;
+		zero_location(&stack_a, &stack_b);
 	}
-	check_args(stack_a);
-	re_index(stack_a);
-	if (ft_lstsize(stack_a) == 2)
-		two_nb_algo(&stack_a);
-	else if (ft_lstsize(stack_a) == 3)
-		t_nb_algo(&stack_a);
-	else if (ft_lstsize(stack_a) == 5)
-		f_nb_algo(&stack_a, &stack_b);
-	else
-	{
-		arr = stack_to_arr(stack_a);
-		new = lis(arr, ft_lstsize(stack_a));
-		size_a = ft_lstsize(stack_a);
-		while (size_a--)
-		{
-			if (new[stack_a->data] == 0)
-				push(&stack_a, &stack_b, 'b');
-			else
-				rotate(&stack_a, &stack_b, 'a');
-		}
-		while (stack_b)
-			best_move(&stack_a, &stack_b);
-	}
-	zero_location(&stack_a, &stack_b);
-	// while (stack_a)
-	// 	printf("%d ", stack_a->data), stack_a = stack_a->next;
 	// system("leaks push_swap");
+	// exit(1);
 	return (0);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func2.c                                            :+:      :+:    :+:   */
+/*   utils_ps.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 16:17:35 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/28 13:57:53 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/01 18:37:47 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,25 @@ int	_max(int a, int b)
 		return (b);
 }
 
-void	check_int(long nb)
+void	check_args(t_lst *lst)
 {
-	if (nb > INT_MAX || nb < INT_MIN)
+	t_lst	*cur;
+	t_lst	*tmp;
+
+	cur = lst;
+	while (cur != NULL)
 	{
-		write(1, "Error\n", 7);
-		exit(1);
+		tmp = cur->next;
+		while (tmp != NULL)
+		{
+			if (cur->data == tmp->data)
+			{
+				write(1, "Error\n", 7);
+				exit(1);
+			}
+			tmp = tmp->next;
+		}
+		cur = cur->next;
 	}
 }
 
@@ -42,32 +55,30 @@ void	check_cara(char *s, int j)
 	}
 }
 
-int	ft_atoi(char *s)
+int	ft_atoi(char *str)
 {
 	int		i;
-	int		j;
-	long	res;
+	long	result;
 	int		sign;
 
 	i = 0;
-	j = 0;
-	res = 0;
+	result = 0;
 	sign = 1;
-	while (s[i] && s[i] <= 32)
+	while (str[i] && str[i] <= 32)
 		i++;
-	if (s[i] == '+' || s[i] == '-')
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (s[i] == '-')
+		if (str[i] == '-')
 			sign *= -1;
 		i++;
-		j++;
 	}
-	check_cara(s, j);
-	while (s[i] >= '0' && s[i] <= '9')
+	check_cara(str, i);
+	while (str[i] >= '0' && str[i] <= '9')
+		result = result * 10 + str[i++] - 48;
+	if ((result * sign) > INT_MAX || (result * sign) < INT_MIN)
 	{
-		res = res * 10 + s[i] - '0';
-		i++;
+		write(2, "Error\n", 7);
+		exit(1);
 	}
-	check_int(res * sign);
-	return (res * sign);
+	return (result * sign);
 }

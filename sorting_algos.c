@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 07:06:51 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/27 11:24:07 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/04/30 11:10:25 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	f_nb_algo(t_lst **stack_a, t_lst **stack_b)
 	int	size;
 
 	size = ft_lstsize(*stack_a);
+	if (is_stack_sorted(stack_a) == 0)
+		exit(1);
 	while (size-- > 0)
 	{
 		if ((*stack_a)->data < 2)

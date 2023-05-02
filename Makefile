@@ -1,24 +1,36 @@
 NAME = push_swap
 
-CC = gcc
+NAME_BONUS = checker
 
-CFLAGS = -Wall -Wextra -Werror rules.c
+CC = cc
 
-SRCS = push_swap.c func1.c func2.c ft_lstadd_back_bonus.c rule_name.c sorting_algos.c main.c get_next_line.c get_next_line_utils.c\
+CFLAGS = -Wall -Werror -Wextra
+
+SRC = push_swap.c ft_split.c utils_ps.c ft_lstadd_back_bonus.c rule_name.c sorting_algos.c main.c sorting_100_500.c instractions.c is_stack_sorted.c\
 		ft_lstadd_front_bonus.c  ft_lstlast_bonus.c  ft_lstnew_bonus.c ft_lstsize_bonus.c re_index.c LIS.c rules.c
+BONUS = checker.c ft_split.c utils_ps.c ft_lstadd_back_bonus.c rule_name_ch.c  is_stack_sorted.c\
+		ft_lstadd_front_bonus.c  ft_lstlast_bonus.c  ft_lstnew_bonus.c ft_lstsize_bonus.c re_index.c  rules.c get_next_line.c get_next_line_utils.c
 
-INCLUDES = push_swap.h
+OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+OBJ_BONUS = $(BONUS:.c=.o)
 
-$(NAME): $(INCLUDES) $(SRCS)
-	$(CC) $(SRCS) -o $(NAME)
+all :$(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+
+bonus : $(NAME_BONUS)
+
+$(NAME_BONUS) : $(OBJ_BONUS)
+	$(CC) $(CFLAGS) $(OBJ_BONUS) -o $(NAME_BONUS)
 
 clean :
-	rm -f $(NAME)
+	rm -f $(OBJ) $(OBJ_BONUS)
 
-fclean :	clean
+fclean : clean
+	rm -f $(NAME) $(NAME_BONUS)
 
 re : fclean all
 
-.PHONY: re all fclean clean bonus
+.PHONY: all re clean fclean

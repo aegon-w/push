@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 17:19:01 by m-boukel          #+#    #+#             */
-/*   Updated: 2022/11/13 21:03:19 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:16:51 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*next_line(char *str)
 		free(str);
 		return (NULL);
 	}
-	str = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+	str = ft_substr(str, i + 1, ft_strlen1(str) - i - 1);
 	return (str);
 }
 

@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:26:52 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/27 08:40:14 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:04:13 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
@@ -38,7 +38,7 @@ char	*ft_strchr(char *str, int c)
 	return (0);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen1(char *s)
 {
 	size_t	i;
 
@@ -47,34 +47,6 @@ size_t	ft_strlen(char *s)
 		i++;
 	return (i);
 }
-
-// char	*ft_substr(char *s, unsigned int start, size_t len)
-// {
-// 	unsigned int	i;
-// 	unsigned int	j;
-// 	char			*p;
-
-// 	i = -1;
-// 	j = 0;
-// 	if (start > ft_strlen(s))
-// 		len = 0;
-// 	else if (ft_strlen(s) - start < len)
-// 		len = ft_strlen(s) - start;
-// 	p = malloc(len + 1);
-// 	if (!p)
-// 		return (NULL);
-// 	while (s[++i])
-// 	{
-// 		if (i >= start && j < len)
-// 		{
-// 			p[j] = s[i];
-// 			j++;
-// 		}
-// 	}
-// 	free(s);
-// 	p[j] = '\0';
-// 	return (p);
-// }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -92,7 +64,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		s1 = malloc(1);
 		s1[0] = '\0';
 	}
-	len = ft_strlen(s1) + ft_strlen(s2);
+	len = ft_strlen1(s1) + ft_strlen1(s2);
 	p = malloc(len + 1);
 	if (!p)
 		return (NULL);

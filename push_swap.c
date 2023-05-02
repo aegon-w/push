@@ -6,45 +6,29 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 10:02:05 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/29 13:55:40 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/02 01:58:32 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	check_args(t_lst *lst)
+typedef struct ints
 {
-	t_lst	*cur;
-	t_lst	*tmp;
+	t_int	sa;
+	t_int	sb;
+}			t_ints;
 
-	cur = lst;
-	while (cur != NULL)
-	{
-		tmp = cur->next;
-		while (tmp != NULL)
-		{
-			if (cur->data == tmp->data)
-			{
-				write(1, "error\n", 19);
-				exit(1);
-			}
-			tmp = tmp->next;
-		}
-		cur = cur->next;
-	}
-}
-
-int	comb_b(int min_a, int max_a, int min_b, int max_b, int min_instraction)
+int	comb_b(t_updo *t, int min_instraction)
 {
 	int	a;
 	int	b;
 	int	c;
 	int	d;
 
-	a = _max(max_a, max_b);
-	b = _max(min_a, min_b);
-	c = max_a + min_b;
-	d = min_a + max_b;
+	a = _max(t->down1, t->down);
+	b = _max(t->up1, t->up);
+	c = t->down1 + t->up;
+	d = t->up1 + t->down;
 	if (a <= b && a <= c && a <= d)
 		return (a);
 	if (b <= a && b <= c && b <= d)
@@ -56,127 +40,84 @@ int	comb_b(int min_a, int max_a, int min_b, int max_b, int min_instraction)
 	return (min_instraction);
 }
 
-void	instraction(t_lst **stack_a, t_lst **stack_b, t_int sa, t_int sb)
+t_pos	*get_pos(t_lst **stack_a)
 {
-	int	a;
-	int	b;
-	int	c;
-	int	d;
+	t_pos	*p;
 
-	a = _max(sa.max, sb.max);
-	b = _max(sa.min, sb.min);
-	c = sa.max + sb.min;
-	d = sa.min + sb.max;
-	if (a <= b && a <= c && a <= d)
-	{
-		while (sa.max && sb.max)
-		{
-			rrotate(stack_a, stack_b, '2');
-			sa.max--;
-			sb.max--;
-		}
-		while (sa.max-- > 0)
-			rrotate(stack_a, stack_b, 'a');
-		while (sb.max-- > 0)
-			rrotate(stack_b, stack_b, 'b');
-	}
-	else if (b <= a && b <= c && b <= d)
-	{
-		while (sa.min && sb.min)
-		{
-			rotate(stack_a, stack_b, '2');
-			sa.min--;
-			sb.min--;
-		}
-		while (sa.min-- > 0)
-			rotate(stack_a, stack_b, 'a');
-		while (sb.min-- > 0)
-			rotate(stack_b, stack_b, 'b');
-	}
-	else if (c <= a && c <= b && c <= d)
-	{
-		while (sa.max-- > 0)
-			rrotate(stack_a, stack_b, 'a');
-		while (sb.min-- > 0)
-			rotate(stack_b, stack_b, 'b');
-	}
-	else
-	{
-		while (sa.min-- > 0)
-			rotate(stack_a, stack_b, 'a');
-		while (sb.max-- > 0)
-			rrotate(stack_b, stack_b, 'b');
-	}
-	push(stack_a, stack_b, 'a');
+	p = malloc(sizeof(t_pos));
+	p->up_pos = (*stack_a)->data;
+	p->upper = 0;
+	p->up = 0;
+	p->val = INT_MAX;
+	return (p);
 }
 
 int	min_pos_location(t_lst **stack_a, int target)
 {
-	int		min;
-	int		min1;
-	int		val;
-	int		min_pos;
-	int		_min;
+	t_pos	*p;
 	t_lst	*tmp;
 
-	min_pos = (*stack_a)->data;
-	_min = 0;
+	p = get_pos(stack_a);
 	tmp = *stack_a;
-	min = 0;
-	val = INT_MAX;
 	while (tmp)
 	{
-		if (target < tmp->data && tmp->data < val)
+		if (target < tmp->data && tmp->data < p->val)
 		{
-			val = tmp->data;
-			min1 = min;
+			p->val = tmp->data;
+			p->up1 = p->up;
 		}
-		if (min_pos > tmp->data)
+		if (p->up_pos > tmp->data)
 		{
-			min_pos = tmp->data;
-			_min = min;
+			p->up_pos = tmp->data;
+			p->upper = p->up;
 		}
 		tmp = tmp->next;
-		min++;
+		p->up++;
 	}
-	if (val == INT_MAX)
-		return (_min);
-	return (min1);
+	free(p);
+	if (p->val == INT_MAX)
+		return (p->upper);
+	return (p->up1);
+}
+
+t_ints	find_best_move(t_lst **stack_a, t_lst **stack_b, t_updo *t, int size_b)
+{
+	int		min_instraction;
+	t_lst	*tmp;
+	t_ints	s;
+
+	min_instraction = INT_MAX;
+	tmp = *stack_b;
+	while (t->up < size_b)
+	{
+		t->up1 = min_pos_location(stack_a, tmp->data);
+		t->down1 = ft_lstsize(*stack_a) - t->up1;
+		if (comb_b(t, min_instraction) < min_instraction)
+		{
+			min_instraction = comb_b(t, min_instraction);
+			s.sa.min = t->up1;
+			s.sa.max = t->down1;
+			s.sb.min = t->up;
+			s.sb.max = t->down;
+		}
+		tmp = tmp->next;
+		t->up++;
+		t->down--;
+	}
+	return (s);
 }
 
 void	best_move(t_lst **stack_a, t_lst **stack_b)
 {
-	int size_b;
-	int min;
-	int max;
-	int min1;
-	int max1;
-	int min_instraction;
-	t_lst *tmp;
+	int		size_b;
+	t_updo	*t;
+	t_ints	s;
 
 	size_b = ft_lstsize(*stack_b);
-	min = 0;
-	max = size_b;
-	tmp = *stack_b;
-	t_int sa, sb;
-	min_instraction = INT_MAX;
-	while (min < size_b)
-	{
-		min1 = min_pos_location(stack_a, tmp->data);
-		max1 = ft_lstsize(*stack_a) - min1;
-		// printf("%d     %d\n", min1, max1);
-		if (comb_b(min, max, min1, max1, min_instraction) < min_instraction)
-		{
-			min_instraction = comb_b(min, max, min1, max1, min_instraction);
-			sa.min = min1;
-			sa.max = max1;
-			sb.min = min;
-			sb.max = max;
-		}
-		tmp = tmp->next;
-		min++;
-		max--;
-	}
-	instraction(stack_a, stack_b, sa, sb);
-	// do instarction to detect best move
+	t = malloc(sizeof(t_updo));
+	t->up = 0;
+	t->down = size_b;
+	s = find_best_move(stack_a, stack_b, t, size_b);
+	free(t);
+	instraction(stack_a, stack_b, s.sa, s.sb);
 }

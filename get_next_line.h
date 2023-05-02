@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:07:01 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/27 08:40:22 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:11:47 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 char	*get_next_line(int fd);
 char	*ft_strchr(char *str, int c);
 char	*ft_substr(char *s, unsigned int start, size_t len);
-size_t	ft_strlen(char *s);
+size_t	ft_strlen1(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strcmp(char *s1, char *s2);
 

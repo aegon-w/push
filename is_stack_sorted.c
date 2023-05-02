@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   is_stack_sorted.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 11:05:45 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/05/01 12:09:16 by m-boukel         ###   ########.fr       */
+/*   Created: 2023/05/01 13:37:35 by m-boukel          #+#    #+#             */
+/*   Updated: 2023/05/01 13:45:49 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_lst	*ft_lstnew(int data)
+size_t	ft_strlen(const char *str)
 {
-	t_lst	*head;
+	int	i;
 
-	head = (t_lst *)malloc(sizeof(t_lst));
-	if (!head)
-		return (NULL);
-	head->data = data;
-	head->next = NULL;
-	return (head);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	is_stack_sorted(t_lst **stack_a)
+{
+	t_lst	*tmp;
+
+	tmp = *stack_a;
+	while (tmp->next)
+	{
+		if (tmp->data > tmp->next->data)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
 }

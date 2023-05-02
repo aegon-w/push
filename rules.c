@@ -6,7 +6,7 @@
 /*   By: m-boukel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 07:06:36 by m-boukel          #+#    #+#             */
-/*   Updated: 2023/04/12 07:06:37 by m-boukel         ###   ########.fr       */
+/*   Updated: 2023/04/30 11:37:24 by m-boukel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	shift_up(t_lst **lst)
 		return ;
 	if (!(*lst)->next)
 		return ;
-	// if (!(*lst)->next->next)
-	// 	return ;
 	ft_lstadd_back(lst, tmp);
 	*lst = tmp->next;
 	tmp->next = NULL;
@@ -64,8 +62,6 @@ void	shift_down(t_lst **lst)
 		return ;
 	if (!(*lst)->next)
 		return ;
-	// if (!(*lst)->next->next)
-	// 	return ;
 	while (tmp->next->next)
 		tmp = tmp->next;
 	last = tmp->next;
